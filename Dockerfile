@@ -5,7 +5,10 @@ WORKDIR /usr/app/
 
 RUN conda update conda -y
 RUN conda create -y -n faststyle python=3.7
-ENV PATH /opt/conda/envs/faststyle/bin:$PATH
+
+RUN ls /opt/conda/envs/
+RUN export PATH=/opt/conda/envs/faststyle/bin:$PATH
+
 
 RUN source activate faststyle
 RUN pip3 install --upgrade pip
