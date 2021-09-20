@@ -5,11 +5,12 @@ WORKDIR /usr/app/
 
 SHELL ["/bin/bash", "--login", "-c"]
 
-RUN conda env create -f environment.yml
+RUN conda create -n faststyle python=3.7
 
-RUN echo "conda activate faststyle" > ~/.bashrc
 
-SHELL ["/bin/bash", "--login", "-c"]
+RUN activate faststyle
+
+
 
 
 RUN pip install --upgrade pip
