@@ -5,7 +5,7 @@ WORKDIR /usr/app/
 
 RUN conda update conda
 RUN conda create -n faststyle python=3.7
-RUN activate faststyle
+RUN source activate faststyle
 RUN pip3 install --upgrade pip
 RUN python -m pip3 install torch==1.7.1 -f https://download.pytorch.org/whl/torch_stable.html
 RUN pip3 install  torchvision===0.8.2 -f  https://download.pytorch.org/whl/torch_stable.html
