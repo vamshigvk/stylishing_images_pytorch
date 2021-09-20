@@ -2,10 +2,11 @@ FROM continuumio/anaconda3:4.4.0
 COPY . /usr/app/
 EXPOSE 5000
 WORKDIR /usr/app/
-ENV PATH=/opt/conda/bin:$PATH
 
 RUN conda update conda -y
 RUN conda create -y -n faststyle python=3.7
+ENV PATH /opt/conda/envs/faststyle/bin:$PATH
+
 RUN source activate faststyle
 RUN pip3 install --upgrade pip
 RUN python -m pip3 install torch==1.7.1 -f https://download.pytorch.org/whl/torch_stable.html
