@@ -4,7 +4,7 @@ COPY . /usr/app/
 EXPOSE 5000
 WORKDIR /usr/app/
 
-SHELL ["/bin/bash", "--login", "-c"]
+RUN apt-get install python3-pip
 
 RUN conda update conda
 
@@ -13,7 +13,6 @@ RUN conda create -n faststyle python=3.7
 
 RUN activate faststyle
 
-RUN apt-get install python3-pip
 
 RUN pip install --upgrade pip
 
