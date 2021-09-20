@@ -94,5 +94,6 @@ def validate(testdir, resdir):
 
 
 
-
-validate("./test/content", "./test/styled")
+input = "./test/content"
+output = "./test/styled"
+validate(input, output)
