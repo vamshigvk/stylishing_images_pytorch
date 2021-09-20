@@ -6,6 +6,8 @@ WORKDIR /usr/app/
 
 SHELL ["/bin/bash", "--login", "-c"]
 
+RUN conda update conda
+
 RUN conda create -n faststyle python=3.7
 
 
