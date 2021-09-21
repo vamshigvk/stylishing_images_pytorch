@@ -7,6 +7,12 @@ EXPOSE 5000
 WORKDIR /usr/app/
 RUN pip install --upgrade pip
 
+RUN python3 -m pip install --user virtualenv
+RUN python3 -m venv env
+RUN source env/bin/activate
+RUN which python
+RUN python3 -m pip install
+
 
 RUN pip install --upgrade pip
 RUN python -m pip install torch==1.7.1 -f https://download.pytorch.org/whl/torch_stable.html
