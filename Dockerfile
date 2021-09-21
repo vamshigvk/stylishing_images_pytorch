@@ -1,5 +1,7 @@
 FROM amazonlinux:2
 
+RUN yum install ncurses-compat-libs
+
 FROM alpine
 
 FROM python:3.7
@@ -9,7 +11,6 @@ EXPOSE 5000
 WORKDIR /usr/app/
 RUN pip install --upgrade pip
 
-RUN yum install ncurses-compat-libs
 
 RUN pip install --upgrade pip
 RUN python -m pip install torch==1.7.1 -f https://download.pytorch.org/whl/torch_stable.html
