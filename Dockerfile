@@ -1,10 +1,6 @@
-FROM amazonlinux:2
-
-RUN yum install ncurses-compat-libs
-
-FROM alpine
-
 FROM python:3.7
+
+RUN apt install ncurses-compat-libs
 
 COPY . /usr/app/
 EXPOSE 5000
