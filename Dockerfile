@@ -1,6 +1,6 @@
 FROM python:3.7
-
-RUN apt install ncurses-compat-libs
+RUN apt update
+RUN apt install -y ncurses-compat-libs
 
 COPY . /usr/app/
 EXPOSE 5000
