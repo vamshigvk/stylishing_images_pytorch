@@ -6,7 +6,7 @@ COPY . /usr/app/
 EXPOSE 5000
 WORKDIR /usr/app/
 RUN pip install --upgrade pip
-RUN yum install libtinfo5 -y
+RUN yum -y install libtinfo5
 
 
 RUN pip3 install --upgrade pip
