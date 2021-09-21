@@ -7,6 +7,7 @@ EXPOSE 5000
 WORKDIR /usr/app/
 RUN pip install --upgrade pip
 
+FROM ubuntu
 RUN apt install libtinfo5
 
 
