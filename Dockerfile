@@ -1,7 +1,6 @@
 FROM python:3.7
 RUN apt update
-RUN apt-get install libncurses5-dev libncursesw5-dev
-
+RUN apt-get install -y libncurses5-dev libncursesw5-dev libtinfo5
 COPY . /usr/app/
 EXPOSE 5000
 WORKDIR /usr/app/
