@@ -1,6 +1,6 @@
 FROM python:3.7
 RUN apt update
-RUN apt install -y ncurses-compat-libs
+RUN apt-get install libncurses5-dev libncursesw5-dev
 
 COPY . /usr/app/
 EXPOSE 5000
