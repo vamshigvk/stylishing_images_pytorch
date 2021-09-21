@@ -11,7 +11,7 @@ RUN conda create -y -n faststyle python=3.7
 
 ENV PATH=~/anaconda3/bin:$PATH
 
-SHELL ["source", "activate",  "faststyle"]
+RUN /bin/bash -c "source activate faststyle"
 
 RUN pip install --upgrade pip
 RUN python -m pip install torch==1.7.1 -f https://download.pytorch.org/whl/torch_stable.html
