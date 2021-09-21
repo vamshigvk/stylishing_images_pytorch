@@ -7,9 +7,7 @@ EXPOSE 5000
 WORKDIR /usr/app/
 RUN pip install --upgrade pip
 
-FROM fedora:34
-RUN yum -y install mkpasswd && yum -y clean all  && rm -rf /var/cache
-RUN yum -y install libtinfo5
+RUN apt install libtinfo5
 
 
 RUN pip3 install --upgrade pip
