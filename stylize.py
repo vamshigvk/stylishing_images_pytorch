@@ -92,8 +92,5 @@ def validate(testdir, resdir):
             styled_image = stylize(image, style, output_width = 1080)
             utils.saveimg(styled_image, str(output_path/f'{image_path.name}'))
 
-
-
-input = "./test/content"
-output = "./test/styled"
-validate(input, output)
+ 
+validate("./test/content","./test/styled")
