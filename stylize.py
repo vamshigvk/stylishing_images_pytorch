@@ -93,4 +93,4 @@ def validate(testdir, resdir):
             utils.saveimg(styled_image, str(output_path/f'{image_path.name}'))
 
  
-validate("./test/content","./test/styled")
+#validate("./test/content","./test/styled")
