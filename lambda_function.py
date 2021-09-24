@@ -30,7 +30,7 @@ def lambda_handler(event, context):
     try:
         path, filename = os.path.split(file_key_name)
         print('Key we are downloading is: ',filename)
-        bucket.download_file(file_key_name, "/tmp/content" + filename)
+        bucket.download_file(file_key_name, "/tmp/content/" + filename)
     except botocore.exceptions.ClientError as error:
         if error.response['Error']['Code'] == "404":
             print(f"The object {file_key_name} does not exist")
