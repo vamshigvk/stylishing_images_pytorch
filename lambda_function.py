@@ -30,24 +30,24 @@ def lambda_handler(event, context):
     try:
         path, filename = os.path.split(file_key_name)
         print('Key we are downloading is: ',filename)
-        bucket.download_file(file_key_name, "/tmp/content/" + filename)
-    except botocore.exceptions.ClientError as error:
-        if error.response['Error']['Code'] == "404":
-            print(f"The object {file_key_name} does not exist")
-        else:
-            raise
+        bucket.download_file(file_key_name, "/tmp/" + filename)
+    except:
+            print(f"Error occurred while downloading, The object {file_key_name} does not exist")
 
     print("downloaded a new image with file name: ",file_key_name," bucket name: ", source_bucket_name, "only")
 
     #Validates the downloaded image from S3 source bucket and stores the output image at tmp/styled
     print('validate is about to trigger')
-    validate("/tmp/content","/tmp/styled")
+    validate("/tmp","/tmp/styled")
     print("validate is finished and stylized the image")
 
     style_list = ['bayanihan','lazy','mosaic','starry','tokyo_ghoul','udnie','wave']
     for i in range(len(style_list)):
-        s3.upload_file( "/tmp/styled/"+style_list[i]+'/'+filename, destination_bucket_name, style_list[i]+'/'+filename)
-        print('Uploaded file from style: ',style_list[i],'file uploaded is: ',filename )
+        try:
+            s3.upload_file( "/tmp/styled/"+style_list[i]+'/'+filename, destination_bucket_name, style_list[i]+'/'+filename)
+            print('Uploaded file from style: ',style_list[i],'file uploaded is: ',filename )
+        except :
+            print("Error occurred while uploading the file, ", filename)
 
     print('uploaded all the files to destination bucket')
 
