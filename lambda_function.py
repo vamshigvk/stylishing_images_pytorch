@@ -43,11 +43,11 @@ def lambda_handler(event, context):
 
     style_list = ['bayanihan','lazy','mosaic','starry','tokyo_ghoul','udnie','wave']
     for i in range(len(style_list)):
-        try:
-            s3.upload_file( "/tmp/styled/"+style_list[i]+'/'+filename, destination_bucket_name, style_list[i]+'/'+filename)
-            print('Uploaded file from style: ',style_list[i],'file uploaded is: ',filename )
-        except :
-            print("Error occurred while uploading the file, ", filename)
+        #try:
+        s3.upload_file( "/tmp/styled/"+style_list[i]+'/'+filename, destination_bucket_name, style_list[i]+'/'+filename)
+        print('Uploaded file from style: ',style_list[i],'file uploaded is: ',filename )
+        #except :
+            #print("Error occurred while uploading the file, ", filename)
 
     print('uploaded all the files to destination bucket')
 
