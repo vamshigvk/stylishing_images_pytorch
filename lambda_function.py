@@ -12,15 +12,14 @@ s3_resource = boto3.resource('s3')
 
 
 def lambda_handler(event, context):
-    destination_bucket_name = 'csv2dynamodbvialambda'
 
     # event contains all information about uploaded object
     print("Event :", event)
 
     # Bucket Name where file was uploaded
     source_bucket_name = event['Records'][0]['s3']['bucket']['name']
-    print("Bucket name is: ", source_bucket_name, "only")
-    
+    print("Source bucket name is: ", source_bucket_name, "only")
+
     # Filename of object (with path)
     file_key_name = event['Records'][0]['s3']['object']['key']
     print('File key name is: ', file_key_name, "only")
@@ -34,17 +33,20 @@ def lambda_handler(event, context):
     except:
             print(f"Error occurred while downloading, The object {file_key_name} does not exist")
 
-    print("downloaded a new image with file name: ",file_key_name," bucket name: ", source_bucket_name, "only")
 
     #Validates the downloaded image from S3 source bucket and stores the output image at tmp/styled
     print('validate is about to trigger')
     validate("/tmp","/tmp/styled")
     print("validate is finished and stylized the image")
 
+    destination_bucket_name = event['Records'][0]['s3']['bucket']['name']
+    print("Destination bucket name is: ", destination_bucket_name, "only")
+
     style_list = ['bayanihan','lazy','mosaic','starry','tokyo_ghoul','udnie','wave']
+
     for i in range(len(style_list)):
         #try:
-        s3.upload_file( "/tmp/styled/"+style_list[i]+'/'+filename, destination_bucket_name, style_list[i]+'/'+filename)
+        s3.upload_file( "/tmp/styled/"+style_list[i]+'/'+filename, destination_bucket_name, 'test/styled/'+style_list[i]+'/'+filename)
         print('Uploaded file from style: ',style_list[i],'file uploaded is: ',filename )
         #except :
             #print("Error occurred while uploading the file, ", filename)
@@ -53,5 +55,5 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps('Hello from S3 events Lambda!')
+        'body': json.dumps('Job done, styled the images from S3 bucket!')
     }
