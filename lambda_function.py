@@ -40,11 +40,12 @@ def lambda_handler(event, context):
         if 'pretrained_models' in str(my_bucket_object):
             count+=1 
             path, filename1 = os.path.split(my_bucket_object.key)
-            bucket.download_file(my_bucket_object.key, "/tmp/pretrained_models" + filename1)
+            bucket.download_file(my_bucket_object.key, "/tmp/pretrained_models/" + filename1)
             print("downloading model: ",filename1)
             models_list.append(str(filename1).split('.pth')[0])
         
     print('There are ', count-1,' number of pretrained models, downloaded : ',models_list[1:])
+
 
 
     #Validates the downloaded image from S3 source bucket and stores the output image at tmp/styled
