@@ -24,7 +24,7 @@ Note that output_height and output_width also used to resize the input image
 if both value are None, keep shape of the input image
 if output_height is None, use output_width and infer output_height from the original h/w ratio
 if output_width is None, use output_height and infer output_width from the original h/w ratio
-if both value are not None, use output_width and infer output_height from the original h/w ratio
+if both value are not None, use output_width and infer output_height from the original h/w ratio.
 
 Output:
 styled_image (array) styled image 
