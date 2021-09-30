@@ -35,7 +35,7 @@ def stylize(image, style, perserve_color = False, output_hight = None, output_wi
     # Load Transformer Network
     net = transformer.TransformerNetwork()
     #net.load_state_dict(torch.load(f"./pretrained_models/{style}.pth", map_location=torch.device('cpu')))
-    net.load_state_dict(torch.load(f"/tmp/pretrained_models/{style}.pth", map_location=torch.device('cpu')))
+    net.load_state_dict(torch.load(f"/tmp/pretrained_models_{style}.pth", map_location=torch.device('cpu')))
     net = net.to('cpu')
 
 
