@@ -34,7 +34,7 @@ def stylize(image, style, perserve_color = False, output_hight = None, output_wi
 
     # Load Transformer Network
     net = transformer.TransformerNetwork()
-    net.load_state_dict(torch.load(f"./pretrained_models/{style}.pth", map_location=torch.device('cpu')))
+    net.load_state_dict(torch.load(f"./pretrained_models/{style}", map_location=torch.device('cpu')))
     net = net.to('cpu')
 
 
@@ -70,7 +70,7 @@ Input:
 testdir (string): folder that contains input image
 resdir  (string): folder that contains result image
 '''
-def validate(testdir, resdir):
+def validate(testdir, resdir, model_dir):
     from pathlib import Path
 
     testimage_paths = [] 
@@ -79,7 +79,8 @@ def validate(testdir, resdir):
     [testimage_paths.extend(list(Path(testdir).glob(f'*.{ext}'))) for ext in ['jpg', 'png']]
 
     # Get all the available models
-    pretrained_models = ['bayanihan','lazy', 'mosaic', 'starry', 'tokyo_ghoul', 'udnie', 'wave'] 
+    #pretrained_models = ['bayanihan','candy','sketch','lazy', 'mosaic', 'starry', 'tokyo_ghoul', 'udnie', 'wave']
+    pretrained_models = os.listdir(model_dir)
     for style in pretrained_models:
         output_path = Path(resdir) / f'{style}'
         try:
@@ -92,5 +93,5 @@ def validate(testdir, resdir):
             styled_image = stylize(image, style, output_width = 1080)
             utils.saveimg(styled_image, str(output_path/f'{image_path.name}'))
 
- 
-#validate("./test/content","./test/styled")
+
+#validate("./test/content","./test/styled",'pretrained_models')
