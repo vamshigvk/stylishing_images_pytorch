@@ -35,29 +35,29 @@ def lambda_handler(event, context):
 
     #counting number of pretrained models present in s3 bucket
     count = 0
+    models_list = []
     for my_bucket_object in bucket.objects.all():
         if 'pretrained_models' in str(my_bucket_object):
             count+=1 
-            path, filename = os.path.split(my_bucket_object.key)
-            bucket.download_file(my_bucket_object.key, "/tmp/pretrained_models" + filename)
+            path, filename1 = os.path.split(my_bucket_object.key)
+            bucket.download_file(my_bucket_object.key, "/tmp/pretrained_models" + filename1)
+            print("downloading model: ",filename1)
+            models_list.append(str(filename1).split('.pth')[0])
         
-    print('There are ',count-1,' number of pretrained models, downloaded them all')
+    print('There are ', count-1,' number of pretrained models, downloaded : ',models_list[1:])
 
 
     #Validates the downloaded image from S3 source bucket and stores the output image at tmp/styled
     print('validate is about to trigger')
-    validate("/tmp","/tmp/styled","/tmp/pretrained_models")
+    validate("/tmp","/tmp/styled", models_list[1:])
     print("validate is finished and stylized the image")
 
     destination_bucket_name = event['Records'][0]['s3']['bucket']['name']
     print("Destination bucket name is: ", destination_bucket_name, "only")
 
     #style_list = ['bayanihan','lazy','mosaic','starry','tokyo_ghoul','udnie','wave']
-    #counting number of models in /tmp/pretrained_models folder
-    style_list = os.listdir("/tmp/pretrained_models")
-    print(style_list)
-
     #uploads the output images from lambda temp directory to S3
+    style_list = models_list[1:]
     for i in range(len(style_list)):
         s3.upload_file( "/tmp/styled/"+style_list[i]+'/'+filename, destination_bucket_name, 'test/styled/'+style_list[i]+'/'+filename)
         print('Uploaded file from style: ',style_list[i],'file uploaded is: ',filename )
