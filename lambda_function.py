@@ -68,5 +68,5 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps('Job done, styled the images from S3 bucket!')
+        'body': json.dumps('Job done, styled the images from S3 bucket and stored in s3!')
     }
