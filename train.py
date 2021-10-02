@@ -69,8 +69,9 @@ def train():
     random.seed(SEED)
 
     # Device
-    device = ("cuda" if torch.cuda.is_available() else "cpu")
-
+    #device = ("cuda" if torch.cuda.is_available() else "cpu")
+    device = "cpu"
+    
     # Dataset and Dataloader
     transform = transforms.Compose([
         transforms.Resize(TRAIN_IMAGE_SIZE),
