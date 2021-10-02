@@ -40,7 +40,8 @@ DATASET_PATH = "dataset"
 NUM_EPOCHS = 1
 
 print('triggering download of style image')
-IMAGE_NAME = download_style_image().split('.')[0]
+downloaded_image = download_style_image()
+IMAGE_NAME = downloaded_image.split('.')[0]
 print('finished downloading the style image: ',IMAGE_NAME)
 
 for file in os.listdir("images/"):

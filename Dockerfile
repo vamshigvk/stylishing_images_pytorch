@@ -18,5 +18,5 @@ RUN pip install numpy==1.16.3
 RUN pip install  matplotlib==3.0.3
 RUN pip install boto3
 RUN pip install pathlib
-RUN pip install glob2
+#RUN pip install glob2
 CMD python train.py
