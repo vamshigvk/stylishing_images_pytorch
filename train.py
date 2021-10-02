@@ -19,10 +19,10 @@ def download_style_image():
     file_key_name = os.environ['FILE_KEY_NAME']
     source_bucket_name = os.environ['SOURCE_BUCKET_NAME']
     path, filename = os.path.split(file_key_name)
-    print('Key we are downloading is: ',filename)
+    print('Key we are downloading is: ',filename,' file full name is: ', file_key_name)
     bucket = s3_resource.Bucket(source_bucket_name)
-    bucket.download_file(file_key_name, "/images/" + filename)
-    return "images/"+filename
+    bucket.download_file(file_key_name, "images/" + filename)
+    return filename
 
 """
 print('removing 3000 images out of 5000 dataset images')
@@ -37,10 +37,18 @@ for file in files:  # Go over each file name to be deleted
 TRAIN_IMAGE_SIZE = 256
 DATASET_PATH = "dataset"
 NUM_EPOCHS = 1
+
 print('triggering download of style image')
-STYLE_IMAGE_PATH = download_style_image()
-print('finished downloading the style image to:',STYLE_IMAGE_PATH)
-IMAGE_NAME = STYLE_IMAGE_PATH.split('.')[0].split('/')[1]
+IMAGE_NAME = download_style_image()
+print('finished downloading the style image: ',IMAGE_NAME)
+
+'''image_name_only = style_image.split('.')[0].split('/')[1]
+image_type = style_image.split('.')[1]
+IMAGE_NAME = image_name_only + image_type'''
+
+STYLE_IMAGE_PATH = 'images/'+os.listdir('images')[0]
+print('image we downloaded is: ', os.listdir('images'))
+
 BATCH_SIZE = 4 
 CONTENT_WEIGHT = 17 # 17
 STYLE_WEIGHT = 50 # 25
