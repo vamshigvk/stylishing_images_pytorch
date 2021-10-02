@@ -5,16 +5,34 @@ from torchvision import datasets, transforms
 import random
 import numpy as np
 import time
-
+import os
+import boto3
 import vgg
 import transformer
 import utils
+from pathlib import Path
+
+
+def download_style_image():
+    s3_resource = boto3.resource('s3')
+    file_key_name = os.environ['FILE_KEY_NAME']
+    source_bucket_name = os.environ['SOURCE_BUCKET_NAME']
+    path, filename = os.path.split(file_key_name)
+    print('Key we are downloading is: ',filename)
+    bucket = s3_resource.Bucket(source_bucket_name)
+    bucket.download_file(file_key_name, "/images/" + filename)
+    return "images/"+filename
+
+
 
 # GLOBAL SETTINGS
 TRAIN_IMAGE_SIZE = 256
 DATASET_PATH = "dataset"
 NUM_EPOCHS = 1
-STYLE_IMAGE_PATH = "images/mosaic.jpg"
+print('triggering download of style image')
+STYLE_IMAGE_PATH = download_style_image()
+print('finished downloading the style image to:',STYLE_IMAGE_PATH)
+IMAGE_NAME = STYLE_IMAGE_PATH.split('.')[0].split('/')[1]
 BATCH_SIZE = 4 
 CONTENT_WEIGHT = 17 # 17
 STYLE_WEIGHT = 50 # 25
@@ -156,7 +174,7 @@ def train():
     # Save TransformerNetwork weights
     TransformerNetwork.eval()
     TransformerNetwork.cpu()
-    final_path = SAVE_MODEL_PATH + "transformer_weight.pth"
+    final_path = SAVE_MODEL_PATH + IMAGE_NAME+".pth"
     print("Saving TransformerNetwork weights at {}".format(final_path))
     torch.save(TransformerNetwork.state_dict(), final_path)
     print("Done saving final model")
@@ -165,4 +183,23 @@ def train():
     if (PLOT_LOSS):
         utils.plot_loss_hist(content_loss_history, style_loss_history, total_loss_history)
 
+
+def upload_model_file():
+    destination_bucket_name = os.environ['DESTINATION_BUCKET_NAME']
+    s3 = boto3.client('s3')
+    model_file_pth = SAVE_MODEL_PATH+IMAGE_NAME+".pth"
+    my_file = Path(model_file_pth)
+    if my_file.is_file():
+        print('uploading generated model file', model_file_pth)
+        s3.upload_file(model_file_pth, destination_bucket_name, "test/pretrained_models/"+IMAGE_NAME+".pth")
+        print('Uploaded file from style: ',model_file_pth)
+    else:
+        print('no model found with name: ', model_file_pth)
+
+print('triggering train method:')
 train()
+print('finished training the model')
+
+print('triggering upload model file method:')
+upload_model_file()
+print('finished uploading the trained model')
