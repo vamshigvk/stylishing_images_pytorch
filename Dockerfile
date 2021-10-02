@@ -16,4 +16,6 @@ RUN pip install  torchvision===0.8.2 -f  https://download.pytorch.org/whl/torch_
 RUN pip install opencv-python==4.1.0.25
 RUN pip install numpy==1.16.3
 RUN pip install  matplotlib==3.0.3
+RUN pip install boto3
+RUN pip install pathlib
 CMD python train.py

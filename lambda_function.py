@@ -48,7 +48,7 @@ def lambda_handler(event, context):
             overrides={
                 'containerOverrides': [
                     {
-                        'name': 'stylieze_retraining',
+                        'name': 'stylize_train_container',
                         'environment': [
                             {
                                 'name': 'DESTINATION_BUCKET_NAME',
@@ -67,10 +67,10 @@ def lambda_handler(event, context):
                 ],
             },
         )
-
+    print(str(response))
     return {
         'statusCode': 200,
-        'body': json.dumps('Fetched filename and triggered run task', response)
+        'body': json.dumps('Fetched filename and triggered run task')
     }
 
  
