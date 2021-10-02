@@ -24,6 +24,7 @@ def download_style_image():
     bucket.download_file(file_key_name, "images/" + filename)
     return filename
 
+
 """
 print('removing 3000 images out of 5000 dataset images')
 files = os.listdir("dataset/val2017")  # Get filenames in current folder
@@ -39,15 +40,15 @@ DATASET_PATH = "dataset"
 NUM_EPOCHS = 1
 
 print('triggering download of style image')
-IMAGE_NAME = download_style_image()
+IMAGE_NAME = download_style_image().split('.')[0]
 print('finished downloading the style image: ',IMAGE_NAME)
 
-'''image_name_only = style_image.split('.')[0].split('/')[1]
-image_type = style_image.split('.')[1]
-IMAGE_NAME = image_name_only + image_type'''
+for file in os.listdir("images/"):
+    if file.startswith(IMAGE_NAME):
+        STYLE_IMAGE =file
 
-STYLE_IMAGE_PATH = 'images/'+os.listdir('images')[0]
-print('image we downloaded is: ', os.listdir('images'))
+STYLE_IMAGE_PATH = 'images/'+STYLE_IMAGE
+print('image path we are using is: ', STYLE_IMAGE_PATH)
 
 BATCH_SIZE = 4 
 CONTENT_WEIGHT = 17 # 17
