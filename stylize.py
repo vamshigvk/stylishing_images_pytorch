@@ -79,7 +79,7 @@ def validate(testdir, resdir):
     [testimage_paths.extend(list(Path(testdir).glob(f'*.{ext}'))) for ext in ['jpg', 'png']]
 
     # Get all the available models
-    pretrained_models = ['bayanihan','lazy', 'mosaic', 'starry', 'tokyo_ghoul', 'udnie', 'wave'] 
+    pretrained_models = ['bayanihan','lazy', 'mosaic', 'starry', 'tokyo_ghoul', 'udnie', 'ThePetsPeopleArtistic1'] 
     for style in pretrained_models:
         output_path = Path(resdir) / f'{style}'
         try:
@@ -92,5 +92,5 @@ def validate(testdir, resdir):
             styled_image = stylize(image, style, output_width = 1080)
             utils.saveimg(styled_image, str(output_path/f'{image_path.name}'))
 
- 
-#validate("./test/content","./test/styled")
+
+validate("./test/content","./test/styled")
