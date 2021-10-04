@@ -1,3 +1,4 @@
+FROM alpine
 FROM python:3.7
 RUN apt update
 RUN apt-get install -y libncurses5-dev libncursesw5-dev libtinfo5
@@ -17,6 +18,6 @@ RUN pip install opencv-python==4.1.0.25
 RUN pip install numpy==1.16.3
 RUN pip install  matplotlib==3.0.3
 RUN pip install boto3
-RUN pip install pathlib
+#RUN pip install pathlib
 #RUN pip install glob2
 CMD python train.py
