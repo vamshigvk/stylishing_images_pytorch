@@ -25,14 +25,14 @@ def download_style_image():
     return filename
 
 
-"""
-print('removing 3000 images out of 5000 dataset images')
+
+print('removing 4000 images out of 5000 dataset images')
 files = os.listdir("dataset/val2017")  # Get filenames in current folder
-files = random.sample(files, 3000)  # Pick 900 random files
+files = random.sample(files, 4000)  # Pick 900 random files
 for file in files:  # Go over each file name to be deleted
     f = os.path.join("dataset/val2017", file)  # Create valid path to file
     os.remove(f)  # Remove the file
-"""
+
 
 # GLOBAL SETTINGS
 TRAIN_IMAGE_SIZE = 256
@@ -63,15 +63,16 @@ PLOT_LOSS = 1
 
 def train():
     # Seeds
+    print('inside train method')
     torch.manual_seed(SEED)
     torch.cuda.manual_seed(SEED)
     np.random.seed(SEED)
     random.seed(SEED)
 
     # Device
-    #device = ("cuda" if torch.cuda.is_available() else "cpu")
-    device = "cpu"
-    
+    device = ("cuda" if torch.cuda.is_available() else "cpu")
+    print('selected device', device)
+
     # Dataset and Dataloader
     transform = transforms.Compose([
         transforms.Resize(TRAIN_IMAGE_SIZE),
@@ -81,11 +82,15 @@ def train():
     ])
     train_dataset = datasets.ImageFolder(DATASET_PATH, transform=transform)
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+    print('train dataset and train loader done')
 
+    print('loading vgg')
     # Load networks
     TransformerNetwork = transformer.TransformerNetwork().to(device)
     VGG = vgg.VGG16().to(device)
+    print('loaded vgg')
 
+    print('getting style features')
     # Get Style Features
     imagenet_neg_mean = torch.tensor([-103.939, -116.779, -123.68], dtype=torch.float32).reshape(1,3,1,1).to(device)
     style_image = utils.load_image(STYLE_IMAGE_PATH)
@@ -96,6 +101,7 @@ def train():
     style_gram = {}
     for key, value in style_features.items():
         style_gram[key] = utils.gram(value)
+    print('got style features')
 
     # Optimizer settings
     optimizer = optim.Adam(TransformerNetwork.parameters(), lr=ADAM_LR)
@@ -108,6 +114,7 @@ def train():
     batch_style_loss_sum = 0
     batch_total_loss_sum = 0
 
+    print('optimizatin training loop starting')
     # Optimization/Training Loop
     batch_count = 1
     start_time = time.time()
@@ -123,12 +130,14 @@ def train():
             # Zero-out Gradients
             optimizer.zero_grad()
 
+            print('about to generate images and get features')
             # Generate images and get features
             content_batch = content_batch[:,[2,1,0]].to(device)
             generated_batch = TransformerNetwork(content_batch)
             content_features = VGG(content_batch.add(imagenet_neg_mean))
             generated_features = VGG(generated_batch.add(imagenet_neg_mean))
 
+            print('calculation content loss')
             # Content Loss
             MSELoss = nn.MSELoss().to(device)
             content_loss = CONTENT_WEIGHT * MSELoss(generated_features['relu2_2'], content_features['relu2_2'])            
@@ -137,6 +146,7 @@ def train():
             # Style Loss
             style_loss = 0
             for key, value in generated_features.items():
+                print('inside key values of generated feature items')
                 s_loss = MSELoss(utils.gram(value), style_gram[key][:curr_batch_size])
                 style_loss += s_loss
             style_loss *= STYLE_WEIGHT
@@ -201,6 +211,7 @@ def train():
     # Plot Loss Histories
     if (PLOT_LOSS):
         utils.plot_loss_hist(content_loss_history, style_loss_history, total_loss_history)
+        print('done plotting loss histogram image')
 
 
 def upload_model_file():

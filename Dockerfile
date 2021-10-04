@@ -1,7 +1,6 @@
-FROM alpine
 FROM python:3.7
 RUN apt update
-RUN apt-get install -y libncurses5-dev libncursesw5-dev libtinfo5
+RUN apt-get install -y libncurses5-dev libncursesw5-dev libtinfo5 libxrender1 libsm6
 RUN apt-get install -y unzip
 
 COPY . /usr/app/
