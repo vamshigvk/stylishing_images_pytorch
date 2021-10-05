@@ -5,7 +5,7 @@ from torchvision import datasets, transforms
 import random
 import numpy as np
 import time
-import os
+import os, os.path
 import boto3
 import vgg
 import transformer
@@ -25,13 +25,15 @@ def download_style_image():
     return filename
 
 
-print('removing 4000 images out of 5000 dataset images')
+print('removing 3000 images out of 5000 dataset images')
 files = os.listdir("dataset/val2017")  # Get filenames in current folder
-files = random.sample(files, 3500)  # Pick 900 random files
+files = random.sample(files, 3000)  # Pick 3000 random files
 for file in files:  # Go over each file name to be deleted
     f = os.path.join("dataset/val2017", file)  # Create valid path to file
     os.remove(f)  # Remove the file
 
+DIR='dataset/val2017'
+dataset_image_count = len([name for name in os.listdir(DIR) if os.path.isfile(os.path.join(DIR, name))])
 
 # GLOBAL SETTINGS
 TRAIN_IMAGE_SIZE = 256
@@ -50,7 +52,7 @@ for file in os.listdir("images/"):
 STYLE_IMAGE_PATH = 'images/'+STYLE_IMAGE
 print('image path we are using is: ', STYLE_IMAGE_PATH)
 
-BATCH_SIZE = 4 
+BATCH_SIZE = 4
 CONTENT_WEIGHT = 17 # 17
 STYLE_WEIGHT = 50 # 25
 ADAM_LR = 0.001
@@ -129,14 +131,14 @@ def train():
             # Zero-out Gradients
             optimizer.zero_grad()
 
-            #print('about to generate images and get features')
+            print('about to generate images and get features')
             # Generate images and get features
             content_batch = content_batch[:,[2,1,0]].to(device)
             generated_batch = TransformerNetwork(content_batch)
             content_features = VGG(content_batch.add(imagenet_neg_mean))
             generated_features = VGG(generated_batch.add(imagenet_neg_mean))
 
-            #print('calculation content loss')
+            print('calculation content loss')
             # Content Loss
             MSELoss = nn.MSELoss().to(device)
             content_loss = CONTENT_WEIGHT * MSELoss(generated_features['relu2_2'], content_features['relu2_2'])            
@@ -145,7 +147,8 @@ def train():
             # Style Loss
             style_loss = 0
             for key, value in generated_features.items():
-                #print('inside key values of generated feature items')
+                dataset_image_count = dataset_image_count-4
+                print('inside key values of generated feature items', dataset_image_count , 'remaining images')
                 s_loss = MSELoss(utils.gram(value), style_gram[key][:curr_batch_size])
                 style_loss += s_loss
             style_loss *= STYLE_WEIGHT
