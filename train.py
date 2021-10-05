@@ -25,14 +25,13 @@ def download_style_image():
     return filename
 
 
-'''
 print('removing 4000 images out of 5000 dataset images')
 files = os.listdir("dataset/val2017")  # Get filenames in current folder
-files = random.sample(files, 4000)  # Pick 900 random files
+files = random.sample(files, 3500)  # Pick 900 random files
 for file in files:  # Go over each file name to be deleted
     f = os.path.join("dataset/val2017", file)  # Create valid path to file
     os.remove(f)  # Remove the file
-'''
+
 
 # GLOBAL SETTINGS
 TRAIN_IMAGE_SIZE = 256
