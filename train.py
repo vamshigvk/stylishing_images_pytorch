@@ -61,7 +61,7 @@ SAVE_MODEL_PATH = "models/"
 SAVE_IMAGE_PATH = "images/out/"
 SAVE_MODEL_EVERY = 500 # 2,000 Images with batch size 4
 SEED = 35
-PLOT_LOSS = 1
+PLOT_LOSS = 0
 IMAGE_PROCESSING_COUNT=0
 
 
@@ -151,7 +151,7 @@ def train():
             style_loss = 0
             for key, value in generated_features.items():
                 global IMAGE_PROCESSING_COUNT
-                IMAGE_PROCESSING_COUNT = IMAGE_PROCESSING_COUNT+BATCH_SIZE
+                IMAGE_PROCESSING_COUNT = IMAGE_PROCESSING_COUNT+0.5
                 print('inside key values of generated feature items ', IMAGE_PROCESSING_COUNT , ' images got processed')
                 s_loss = MSELoss(utils.gram(value), style_gram[key][:curr_batch_size])
                 style_loss += s_loss
