@@ -34,6 +34,7 @@ for file in files:  # Go over each file name to be deleted
 
 DIR='dataset/val2017'
 dataset_image_count = len([name for name in os.listdir(DIR) if os.path.isfile(os.path.join(DIR, name))])
+print('Number of images present in dataset folder is: ', dataset_image_count)
 
 # GLOBAL SETTINGS
 TRAIN_IMAGE_SIZE = 256
@@ -146,9 +147,10 @@ def train():
 
             # Style Loss
             style_loss = 0
+            count=0
             for key, value in generated_features.items():
-                dataset_image_count = dataset_image_count-4
-                print('inside key values of generated feature items', dataset_image_count , 'remaining images')
+                count = count+BATCH_SIZE
+                print('inside key values of generated feature items ', count , ' images got processed')
                 s_loss = MSELoss(utils.gram(value), style_gram[key][:curr_batch_size])
                 style_loss += s_loss
             style_loss *= STYLE_WEIGHT
