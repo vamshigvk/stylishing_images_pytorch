@@ -53,7 +53,7 @@ for file in os.listdir("images/"):
 STYLE_IMAGE_PATH = 'images/'+STYLE_IMAGE
 print('image path we are using is: ', STYLE_IMAGE_PATH)
 
-BATCH_SIZE = 4
+BATCH_SIZE = 2
 CONTENT_WEIGHT = 17 # 17
 STYLE_WEIGHT = 50 # 25
 ADAM_LR = 0.001
@@ -62,6 +62,8 @@ SAVE_IMAGE_PATH = "images/out/"
 SAVE_MODEL_EVERY = 500 # 2,000 Images with batch size 4
 SEED = 35
 PLOT_LOSS = 1
+IMAGE_PROCESSING_COUNT=0
+
 
 def train():
     # Seeds
@@ -147,10 +149,9 @@ def train():
 
             # Style Loss
             style_loss = 0
-            count=0
             for key, value in generated_features.items():
-                count = count+BATCH_SIZE
-                print('inside key values of generated feature items ', count , ' images got processed')
+                IMAGE_PROCESSING_COUNT = IMAGE_PROCESSING_COUNT+BATCH_SIZE
+                print('inside key values of generated feature items ', IMAGE_PROCESSING_COUNT , ' images got processed')
                 s_loss = MSELoss(utils.gram(value), style_gram[key][:curr_batch_size])
                 style_loss += s_loss
             style_loss *= STYLE_WEIGHT
