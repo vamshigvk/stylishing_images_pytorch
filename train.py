@@ -150,6 +150,7 @@ def train():
             # Style Loss
             style_loss = 0
             for key, value in generated_features.items():
+                global IMAGE_PROCESSING_COUNT
                 IMAGE_PROCESSING_COUNT = IMAGE_PROCESSING_COUNT+BATCH_SIZE
                 print('inside key values of generated feature items ', IMAGE_PROCESSING_COUNT , ' images got processed')
                 s_loss = MSELoss(utils.gram(value), style_gram[key][:curr_batch_size])
