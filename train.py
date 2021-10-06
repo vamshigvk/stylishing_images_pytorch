@@ -25,7 +25,7 @@ def download_style_image():
     return filename
 
 
-print('removing 3000 images out of 5000 dataset images')
+print('removing 3000 images out of 5000 dataset images.')
 files = os.listdir("dataset/val2017")  # Get filenames in current folder
 files = random.sample(files, 3000)  # Pick 3000 random files
 for file in files:  # Go over each file name to be deleted
